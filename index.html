@@ -2,152 +2,401 @@
 <html>
 <head>
   <base target="_top">
-  <title>System Migration</title>
+  <title>System Migration - BUSS Platform</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
-      background: #f5f5f5;
+      min-height: 100vh;
     }
-    .header {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      padding: 40px;
-      border-radius: 10px;
-      text-align: center;
-      margin-bottom: 30px;
-    }
-    .preview-section {
-      display: flex;
-      gap: 30px;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin: 30px 0;
-    }
-    .preview-card {
-      flex: 1;
-      min-width: 280px;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-      overflow: hidden;
-      transition: transform 0.3s;
-    }
-    .preview-card:hover {
-      transform: translateY(-5px);
-    }
-    .preview-card h3 {
-      background: #667eea;
-      color: white;
-      margin: 0;
-      padding: 12px;
-      text-align: center;
-    }
-    .preview-card img {
+
+    /* Full screen background */
+    .hero {
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
       height: auto;
-      display: block;
+      background: url('images/dash.png') center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow-y: auto;
     }
-    .cta-button {
+
+    /* Gradient from top (white) to bottom (dark) */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(180deg, 
+        rgba(255, 255, 255, 0.95) 0%,
+        rgba(255, 255, 255, 0.9) 20%,
+        rgba(0, 0, 0, 0.4) 60%,
+        rgba(0, 0, 0, 0.85) 100%);
+    }
+
+    /* Content wrapper */
+    .content {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 30px 40px;
+    }
+
+    /* Header - dark text for white top area */
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .header h1 {
+      font-size: 2.8rem;
+      margin-bottom: 10px;
+      color: #1a2980;
+      text-shadow: 0 1px 2px rgba(255,255,255,0.5);
+    }
+
+    .header p {
+      font-size: 1.2rem;
+      color: #333;
+      font-weight: 500;
+    }
+
+    /* Main content - flex layout */
+    .main-content {
+      display: flex;
+      gap: 50px;
+      flex-wrap: wrap;
+      align-items: flex-start;
+    }
+
+    /* Left side - Features columns */
+    .features-container {
+      flex: 1.5;
+      min-width: 280px;
+      display: flex;
+      gap: 25px;
+      flex-wrap: wrap;
+    }
+
+    .feature-col {
+      flex: 1;
+      min-width: 240px;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(8px);
+      border-radius: 20px;
+      padding: 22px 24px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+
+    .feature-col h3 {
+      font-size: 1.3rem;
+      margin-bottom: 15px;
+      color: #1a2980;
+      border-bottom: 2px solid #28a745;
+      padding-bottom: 8px;
+      display: inline-block;
+    }
+
+    .feature-col ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .feature-col li {
+      font-size: 0.85rem;
+      padding: 6px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #222;
+    }
+
+    .feature-col li:before {
+      content: "✓";
+      color: #28a745;
+      font-size: 0.85rem;
+      font-weight: bold;
+    }
+
+    .coming-soon li:before {
+      content: "🚀";
+      color: #ff9800;
+      font-size: 0.8rem;
+    }
+
+    /* Right side - Mobile app (PROMINENT) */
+    .mobile-container {
+      flex: 1;
+      min-width: 280px;
+      text-align: center;
+    }
+
+    .mobile-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      border-radius: 40px;
+      padding: 25px 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+      transition: transform 0.3s;
+    }
+
+    .mobile-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .mobile-card img {
+      width: 100%;
+      max-width: 320px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+      border-radius: 35px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    }
+
+    .mobile-badge {
+      margin-top: 20px;
+    }
+
+    .mobile-badge h3 {
+      color: #1a2980;
+      font-size: 1.4rem;
+      margin-bottom: 8px;
+    }
+
+    .mobile-badge p {
+      color: #555;
+      font-size: 0.9rem;
+      margin-bottom: 15px;
+    }
+
+    .install-badge {
       display: inline-block;
       background: #28a745;
       color: white;
-      padding: 15px 30px;
-      font-size: 18px;
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: bold;
+    }
+
+    /* Buttons */
+    .button-group {
+      text-align: center;
+      margin: 40px 0 30px;
+    }
+
+    .cta-button {
+      display: inline-block;
+      background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+      color: white;
+      padding: 14px 35px;
+      font-size: 1rem;
       font-weight: bold;
       text-decoration: none;
       border-radius: 50px;
-      margin: 20px;
-      transition: background 0.3s;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
     }
+
     .cta-button:hover {
-      background: #218838;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
     }
-    .info-box {
-      background: #e3f2fd;
-      padding: 20px;
-      border-radius: 8px;
+
+    .secondary-link {
+      display: inline-block;
+      color: white;
+      font-size: 0.85rem;
+      text-decoration: none;
+      margin-top: 15px;
+      opacity: 0.9;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    }
+
+    .secondary-link:hover {
+      opacity: 1;
+      text-decoration: underline;
+    }
+
+    /* Support section */
+    .support {
+      text-align: center;
+      font-size: 0.75rem;
       margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.3);
+      color: white;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    }
+
+    .support a {
+      color: #ffd700;
+      text-decoration: none;
+    }
+
+    .support a:hover {
+      text-decoration: underline;
+    }
+
+    /* Responsive */
+    @media (max-width: 968px) {
+      .content {
+        padding: 20px;
+      }
+      
+      .main-content {
+        gap: 30px;
+      }
+      
+      .header h1 {
+        font-size: 2rem;
+      }
+      
+      .header p {
+        font-size: 1rem;
+      }
+      
+      .mobile-card img {
+        max-width: 250px;
+      }
+      
+      .mobile-badge h3 {
+        font-size: 1.2rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .feature-col {
+        padding: 16px 18px;
+      }
+      
+      .feature-col h3 {
+        font-size: 1.1rem;
+      }
+      
+      .feature-col li {
+        font-size: 0.75rem;
+      }
+      
+      .mobile-card {
+        padding: 20px 15px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .content {
+        padding: 15px;
+      }
+      
+      .cta-button {
+        padding: 12px 25px;
+        font-size: 0.9rem;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="header">
-    <h1>📢 New BRAC Uganda Staff Sacco System Available!</h1>
-    <p>We've upgraded our platform with better features and mobile experience</p>
+  <div class="hero">
+    <div class="content">
+      <!-- Header -->
+      <div class="header">
+        <h1>📢 New BUSS Platform Available!</h1>
+        <p>Upgraded with powerful features & enhanced mobile experience</p>
+      </div>
+
+      <!-- Main Content Area -->
+      <div class="main-content">
+        <!-- Left: Features -->
+        <div class="features-container">
+          <div class="feature-col">
+            <h3>✨ What's New</h3>
+            <ul>
+              <li>Real-time data sync</li>
+              <li>Mobile-optimized dashboard</li>
+              <li>Enhanced security</li>
+              <li>One-click reports export</li>
+              <li>Dark mode toggle</li>
+              <li>Member Application Portal</li>
+              <li>Push & Email notifications</li>
+              <li>Member feedback portal</li>
+              <li>WhatsApp Support Chat</li>
+            </ul>
+          </div>
+
+          <div class="feature-col">
+            <h3>🚀 Coming Soon</h3>
+            <ul class="coming-soon">
+              <li>Mobile Money (MTN/Airtel)</li>
+              <li>Biometric Login</li>
+              <li>Auto Loan Disbursement</li>
+              <li>USSD Access</li>
+              <li>PDF Annual Statements</li>
+              <li>Bulk SMS Campaigns</li>
+              <li>Multi-language Support</li>
+              <li>Customizable Widgets</li>
+              <li>Audit Trail Export</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Right: Mobile App (PROMINENT) -->
+        <div class="mobile-container">
+          <div class="mobile-card">
+            <img src="images/buss_app.png" alt="BUSS Mobile App" 
+                 onerror="this.src='https://via.placeholder.com/320x500?text=BUSS+Mobile+App'">
+            <div class="mobile-badge">
+              <h3>📱 BUSS now has a Mobile App</h3>
+              <p>Access your dashboard anywhere, anytime</p>
+              <span class="install-badge">System URL: https://bracstaffsacco.com/index.php</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="button-group">
+        <a href="https://bracstaffsacco.com/index.php" class="cta-button" target="_blank">
+          🚀 Go to New System Now
+        </a>
+        <div>
+          <a href="#" class="secondary-link" onclick="return false;">
+            Continue using old system (temporarily)
+          </a>
+        </div>
+      </div>
+
+      <!-- Support -->
+      <div class="support">
+        <p>💬 Need help? <a href="mailto:abskills@bracstaffsacco.com">abskills@bracstaffsacco.com</a> <br>
+        💡 Suggest a features</p>
+      </div>
+    </div>
   </div>
-
-  <div class="preview-section">
-    <div class="preview-card">
-      <h3>📱 Desktop Dashboard</h3>
-      <img src="images/dash.png" alt="New Dashboard Preview" 
-           onerror="this.src='https://via.placeholder.com/400x300?text=Desktop+Preview'">
-      <p style="padding: 15px;">Enhanced analytics, faster loading, and intuitive navigation</p>
-    </div>
-    <div class="preview-card">
-      <h3>📲 Mobile Interface</h3>
-      <img src="images/buss_app.png" alt="Mobile Dashboard Preview"
-           onerror="this.src='https://via.placeholder.com/300x400?text=Mobile+Preview'">
-      <p style="padding: 15px;">Fully responsive design optimized for on-the-go access when you
-        Install the Mobile friendly BUSS application.</p>
-    </div>
-  </div>
-
-  <div style="text-align: center;">
-    <a href="https://bracstaffsacco.com/index.php" class="cta-button" target="_blank">
-      🚀 Go to New System Now
-    </a>
-    <br>
-    <a href="YOUR_OLD_SYSTEM_URL" style="color: #666; font-size: 14px;">
-      Continue using old system (temporarily)
-    </a>
-  </div>
-
-  <div style="display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 28px;">
-    <!-- Left Column - What's New -->
-    <div class="info-box" style="flex: 1; min-width: 250px;">
-        <h3>✨ What's New?</h3>
-        <ul>
-            <li>Real-time data synchronization</li>
-            <li>Mobile-optimized dashboard</li>
-            <li>Enhanced security and faster performance</li>
-            <li>One-click reports export</li>
-            <li>Full dark mode toggle button for eye comfort</li>
-            <li>Member Application Portal</li>
-            <li>Push, In-App and Email Notifications</li>
-            <li>Member feedback portal</li>
-            <li>Real-time WhatsApp Support Chat</li>
-        </ul>
-        <p><strong>Need help?</strong> Contact support at abskills@bracstaffsacco.com</p>
-    </div>
-
-    <!-- Right Column - What's Coming -->
-    <div class="info-box" style="flex: 1; min-width: 250px;">
-        <h3>🚀 What's Coming?</h3>
-        <ul>
-            <li>Mobile Money Integration (MTN/Airtel)</li>
-            <li>Biometric Login (Fingerprint/Face ID)</li>
-            <li>Automated Loan Disbursement to Mobile Wallet</li>
-            <li>USSD Access for Feature Phones</li>
-            <li>Annual Member Statement PDF Generation</li>
-            <li>Bulk SMS Campaigns</li>
-            <li>Multi-language Support (Luganda, Runyankole)</li>
-            <li>Dashboard Widgets (Customizable)</li>
-            <li>Audit Trail with Export</li>
-        </ul>
-        <p><strong>Suggest a feature?</strong> Email us at suggestions@bracstaffsacco.com</p>
-    </div>
-</div>
 
   <script>
-    // Track how many users see this landing page
-    fetch('YOUR_ANALYTICS_ENDPOINT', { 
-      method: 'POST', 
-      mode: 'no-cors',
-      body: JSON.stringify({ event: 'landing_page_view', timestamp: new Date() })
-    }).catch(e => console.log('Analytics disabled'));
+    // Analytics tracking
+    if (typeof fetch !== 'undefined') {
+      fetch('YOUR_ANALYTICS_ENDPOINT', { 
+        method: 'POST', 
+        mode: 'no-cors',
+        body: JSON.stringify({ event: 'landing_page_view', timestamp: new Date().toISOString() })
+      }).catch(() => {});
+    }
   </script>
 </body>
 </html>
